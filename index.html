@@ -590,11 +590,11 @@ $('#f-name').addEventListener('input',e=>{$('#fromName').textContent=e.target.va
 const MODE=SCRIPT_URL?'live':'demo';
 const API={
   async submit(d){
-    if(MODE==='live'){const r=await fetch(SCRIPT_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(d)});const j=await r.json();if(!j.ok)throw new Error(j.error||'error');return j;}
+    if(MODE==='live'){const r=await fetch(SCRIPT_URL+'?action=submit&data='+encodeURIComponent(JSON.stringify(d))+'&t='+Date.now());const j=await r.json();if(!j.ok)throw new Error(j.error||'error');return j;}
     const l=store.get('tn-demo')||[];l.push({n:d.name,b:d.bouquet});store.set('tn-demo',l);return{ok:true,table:l};
   },
   async table(){
-    if(MODE==='live'){const r=await fetch(SCRIPT_URL);return r.json();}
+    if(MODE==='live'){const r=await fetch(SCRIPT_URL+'?t='+Date.now());return r.json();}
     return{ok:true,table:store.get('tn-demo')||[]};
   }
 };
